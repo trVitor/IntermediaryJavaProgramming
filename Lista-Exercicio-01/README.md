@@ -1,6 +1,7 @@
 Lista de Exercicio
+
 Este é um programa qual foi ministrado pelos professores em sala de aula,
-incentivando o uso de ALGORITMOS DE ORDERNAÇÃO !! 
+incentivando o uso de ALGORITMOS DE ORDERNAÇÃO!! 
 
 
 Funcionalidades:
