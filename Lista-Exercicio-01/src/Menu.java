@@ -4,8 +4,9 @@ public class Menu {
     public static void main(String[] args) throws Exception {
       Scanner scanner = new Scanner(System.in);
                  //LEMBRAR DE MUDAR O LOCAL DO ARQUIVO ELE PODE VARIAR DE PC PRA PC
-        String JogosDesordenados = "C:/Users/conta/IntermediaryJavaProgramming/JogosDesordenados.csv";
-        Item[] items = ArquivoCSV.lista(JogosDesordenados);       
+       String JogosDesordenados = "C:/Users/conta/IntermediaryJavaProgramming/JogosDesordenados.csv";
+       // Item[] items = ArquivoCSV.lista(JogosDesordenados);       
+        Item[] items = new Item[40];       
 
         // DO WHILE PRA PERMITER UM MENU SEMPRE DISPONIVEL PARA A PESSOA ATÉ QUE ELA ESCOLHA SAIR
         int escolhe;
