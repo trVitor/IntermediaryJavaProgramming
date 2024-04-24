@@ -24,7 +24,7 @@ public class Menu {
         switch (escolhe) {
 
           case 1:
-            ArquivoCSV.lista(JogosDesordenados);
+            items = ArquivoCSV.lista(JogosDesordenados);
           break;
           
           case 2:
