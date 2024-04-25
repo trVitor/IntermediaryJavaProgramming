@@ -5,14 +5,15 @@ public class Item {
     private String jogos;
     private String categoria;
     private double avaliacao;
-
+    
+            /* CONSTRUTOR DA CLASSE */
     public Item(String jogos, String categoria, double avaliacao){
         this.jogos = jogos;
         this.categoria = categoria;
         this.avaliacao = avaliacao;
     }
 
-    // METODOS GETS E SETS
+            /*METODOS GETS E SETS */
     public String getJogos() {
         return jogos;
     }

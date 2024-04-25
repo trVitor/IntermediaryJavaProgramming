@@ -3,13 +3,11 @@ import java.util.Scanner;
 public class Menu {
     public static void main(String[] args) throws Exception {
       Scanner scanner = new Scanner(System.in);
-                 //LEMBRAR DE MUDAR O LOCAL DO ARQUIVO ELE PODE VARIAR DE PC PRA PC
-        String JogosDesordenados = "C:/Users/conta/IntermediaryJavaProgramming/JogosDesordenados.csv";
-        Item[] items = ArquivoCSV.lista(JogosDesordenados);       
-
-        // DO WHILE PRA PERMITER UM MENU SEMPRE DISPONIVEL PARA A PESSOA ATÉ QUE ELA ESCOLHA SAIR
+                 /* LEMBRAR DE MUDAR O LOCAL DO ARQUIVO ELE PODE VARIAR DE PC PRA PC */
+        String JogosDesordenados = "JogosDesordenados.csv";
+        Item[] items = null;
+        /* DO WHILE PRA PERMITER UM MENU SEMPRE DISPONIVEL PARA A PESSOA ATÉ QUE ELA ESCOLHA SAIR */
         int escolhe;
-        //boolean continua = true;
         do {
           System.out.println("--- Menu ---");
           System.out.println("[1] Ler arquivo");
@@ -19,42 +17,50 @@ public class Menu {
           System.out.print("Escolha uma opção: ");
           escolhe = scanner.nextInt();
           
-                    //SWITCH PARA CRIAR UM MENU DE SELEÇÃO, ACHO MAIS PRATICO
+                    /* SWITCH PARA CRIAR UM MENU DE SELEÇÃO, MAIS PRATICO */
         switch (escolhe) {
-
+          
           case 1:
-            ArquivoCSV.lista(JogosDesordenados);
+           items = ArquivoCSV.lista(JogosDesordenados);
+           System.out.println("\nArquivo lido com sucesso.\n\n");
           break;
           
           case 2:
-                   //ORDENA OS JOGOS EM CATEGORIA usando selection SORT
+          /* VERIFICAÇÃO SE ARQUIVO FOI LIDO*/
+          if(items != null){
+
+                   /* ORDENA OS JOGOS EM CATEGORIA usando selection SORT */
           Categoria cat = new Categoria(items);
           Categoria.selectionSort(items);
-          System.out.println(cat.toString()); 
+          System.out.println(cat.toString());
+          }else{
+            System.out.println("\nPor favor, leia o arquivo primeiro (Opção 1).\n\n");
+          } 
           break;
 
           case 3:
-                   //ORDENA OS JOGOS EM AVALIAÇÕES usando insertion SORT
+          /* VERIFICAÇÃO SE ARQUIVO FOI LIDO*/
+          if(items != null){
+                   /*ORDENA OS JOGOS EM AVALIAÇÕES usando insertion SORT*/
             Avaliacao aval = new Avaliacao(items);
             Avaliacao.insertionSort(items);
             System.out.println(aval.toString());
+          }else{
+            System.out.println("\nPor favor, leia o arquivo primeiro (Opção 1).\n\n");
+          }
+
           break;
 
           case 4:
-                  // SAI DO DA EXECUÇÃO
-             System.out.println("Execução ENCERRADA!! ");
+                  /* SAI DO DA EXECUÇÃO */
+             System.out.println("\nExecução ENCERRADA!! ");
           break;
              
           default:
-                   // SE O USUARIO DIGITAR ALGO ERRADO
-             System.out.println("Opção inválida, tente novamente.");
+                   /* SE O USUARIO DIGITAR ALGO ERRADO */
+             System.out.println("\nOpção inválida, tente novamente.\n");
             break;
         }
-        /*if (continua) {
-          System.out.print("Deseja voltar ao menu? (S/N): ");
-          String resposta = scanner.next();
-          continua = resposta.equalsIgnoreCase("S");
-      }*/
       } while(escolhe != 4);
 
       scanner.close();
