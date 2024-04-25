@@ -3,23 +3,26 @@ import java.util.Scanner;
 public class Menu {
     public static void main(String[] args) throws Exception {
       Scanner scanner = new Scanner(System.in);
+
                  /* LEMBRAR DE MUDAR O LOCAL DO ARQUIVO ELE PODE VARIAR DE PC PRA PC */
         String JogosDesordenados = "JogosDesordenados.csv";
         Item[] items = null;
+
+
         /* DO WHILE PRA PERMITER UM MENU SEMPRE DISPONIVEL PARA A PESSOA ATÉ QUE ELA ESCOLHA SAIR */
+        
         int escolhe;
         do {
           System.out.println("--- Menu ---");
           System.out.println("[1] Ler arquivo");
-          System.out.println("[2] Ordenar por categoria");
-          System.out.println("[3] Ordenar por avaliação");
+          System.out.println("[2] Ordenar por CATEGORIA");
+          System.out.println("[3] Ordenar por AVALIAÇÃO");
           System.out.println("[4] Sair");
           System.out.print("Escolha uma opção: ");
           escolhe = scanner.nextInt();
           
                     /* SWITCH PARA CRIAR UM MENU DE SELEÇÃO, MAIS PRATICO */
         switch (escolhe) {
-          
           case 1:
            items = ArquivoCSV.lista(JogosDesordenados);
            System.out.println("\nArquivo lido com sucesso.\n\n");
