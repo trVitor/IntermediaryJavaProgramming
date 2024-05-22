@@ -35,10 +35,10 @@ public class LexAnalizer {
         "until", "var", "while", "with"
     );
 
-    private static final Pattern TOKEN_PATTERNS = Pattern.compile(
+     private static final Pattern TOKEN_PATTERNS = Pattern.compile(
         "(?<NUMBER>\\d+)|" +
         "(?<ID>[A-Za-z_][A-Za-z0-9_]*)|" +
-        "(?<OP>[+\\-*/=<>:])|" + 
+        "(?<OP>[+\\-*/=<>])|" +
         "(?<LPAREN>\\()|" +
         "(?<RPAREN>\\))|" +
         "(?<LBRACE>\\{)|" +
@@ -47,13 +47,14 @@ public class LexAnalizer {
         "(?<COLON>:)|" +
         "(?<COMMA>,)|" +
         "(?<DOT>\\.)|" +
+        "(?<STRING>'[^']*')|" + 
         "(?<WHITESPACE>[ \t]+)|" +
         "(?<NEWLINE>\\n)|" +
         "(?<COMMENT>\\(\\*.*?\\*\\))|" +
         "(?<MISMATCH>.)"
     );
 
-    public Token LexAnalizer() {
+    public Token nextToken() {
         while (matcher.find(currentPos)) {
             if (matcher.group("NEWLINE") != null) {
                 lineNo++;
@@ -106,6 +107,9 @@ public class LexAnalizer {
             } else if (matcher.group("DOT") != null) {
                 currentPos = matcher.end();
                 return new Token(TokenType.DOT, matcher.group("DOT"), lineNo);
+            } else if (matcher.group("STRING") != null) { 
+                currentPos = matcher.end();
+                return new Token(TokenType.STRING, matcher.group("STRING"), lineNo);
             } else if (matcher.group("MISMATCH") != null) {
                 throw new RuntimeException("Unexpected character: " + matcher.group("MISMATCH") + " at line " + lineNo);
             }
@@ -125,7 +129,7 @@ public class LexAnalizer {
             System.out.println("Testing code:\n" + code);
             LexAnalizer lexer = new LexAnalizer(code);
             Token token;
-            while ((token = lexer.LexAnalizer()) != null) {
+            while ((token = lexer.nextToken()) != null) {
                 System.out.println(token);
             }
             System.out.println("Test completed.\n");
