@@ -1,18 +1,13 @@
-## Getting Started
+# MyMovieList
+MyMovieList é uma aplicação Java para controle pessoal de filmes, onde você pode adicionar, listar, buscar e gerenciar filmes de sua biblioteca pessoal.
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Funcionalidades
+* Adicionar filmes especificando nome, gênero, diretor, ano.
+* Listar todos os filmes, filmes favoritos ou filmes assistidos.
+* Buscar filmes por nome.
+* Avaliar filmes com até 5 estrelas.
+* Marcar filmes como assistidos e favoritos.
+* Remover filmes da biblioteca.
+### Requisitos do Sistema
+* Java Development Kit (JDK) 8 ou superior.
+* Apache Maven
