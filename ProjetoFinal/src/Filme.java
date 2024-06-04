@@ -1,8 +1,6 @@
 import java.io.Serializable;
 
-
-public class Filme implements Serializable{
-
+public class Filme implements Serializable {
     private String nome;
     private String genero;
     private String diretor;
@@ -10,7 +8,6 @@ public class Filme implements Serializable{
     private boolean assistido;
     private boolean favorito;
     private int avaliacao;
-
 
     public Filme(String nome, String genero, String diretor, int ano, boolean assistido, boolean favorito) {
         this.nome = nome;
@@ -61,7 +58,6 @@ public class Filme implements Serializable{
         this.favorito = false;
     }
 
-    
     public int getAvaliacao() {
         return avaliacao;
     }
@@ -74,5 +70,4 @@ public class Filme implements Serializable{
     public String toString() {
         return String.format("   %s (%d)\n Diretor: %s\n Gênero: %s", nome, ano, diretor, genero);
     }
-
 }

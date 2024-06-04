@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BibliotecaFilmes {
-
     private List<Filme> filmes;
 
     public BibliotecaFilmes() {
@@ -89,6 +88,7 @@ public class BibliotecaFilmes {
     public List<Filme> buscarFilme(String nome) {
         return filmes.stream().filter(filme -> filme.getNome().toLowerCase().contains(nome.toLowerCase())).collect(Collectors.toList());
     }
+
     private void salvarFilmes() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("filmes.dat"))) {
             oos.writeObject(filmes);
@@ -105,4 +105,23 @@ public class BibliotecaFilmes {
         }
     }
 
+    public List<Filme> filtrarFilmesPorFavoritos() {
+        List<Filme> filmesFavoritos = new ArrayList<>();
+        for (Filme filme : filmes) {
+            if (filme.isFavorito()) {
+                filmesFavoritos.add(filme);
+            }
+        }
+        return filmesFavoritos;
+    }
+
+    public List<Filme> filtrarFilmesPorAssistidos() {
+        List<Filme> filmesAssistidos = new ArrayList<>();
+        for (Filme filme : filmes) {
+            if (filme.isAssistido()) {
+                filmesAssistidos.add(filme);
+            }
+        }
+        return filmesAssistidos;
+    }
 }

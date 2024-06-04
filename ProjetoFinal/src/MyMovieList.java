@@ -17,7 +17,7 @@ public class MyMovieList {
     }
 
     private void criarInterfaceGrafica() {
-        JFrame frame = new JFrame("Controle Pessoal de Filmes");
+        JFrame frame = new JFrame("MeetFlix OU CoordinateFlix");
         frame.setSize(750, 550);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -74,6 +74,7 @@ public class MyMovieList {
         panelBusca.add(campoBusca);
         panelBusca.add(botaoBuscar);
         frame.add(panelBusca, BorderLayout.SOUTH);
+
 
         // Ações dos botões
         botaoAdicionar.addActionListener(e -> {
@@ -169,6 +170,28 @@ public class MyMovieList {
         panelBotoesSuperiores.add(botaoFavoritos);
         panelBotoesSuperiores.add(botaoAssistidos);
         panelBotoesSuperiores.add(botaoTodos);
+
+         // JComboBox para ordenação
+        JComboBox<String> comboBoxOrdenacao = new JComboBox<>(new String[]{"Filtro","Por Adição", "Por Nome", "Por Avaliação"});
+        comboBoxOrdenacao.setPreferredSize(new Dimension(88, 19));
+        comboBoxOrdenacao.setBackground(corCaixaPesquisa);
+        comboBoxOrdenacao.setForeground(corLetras); 
+        comboBoxOrdenacao.addActionListener(e -> {
+            String criterio = (String) comboBoxOrdenacao.getSelectedItem();
+            switch (criterio) {
+                case "Por Adição":
+                    OrdenadorFilmes.ordenarPorAdicao(listaAtual);
+                    break;
+                case "Por Nome":
+                    OrdenadorFilmes.ordenarPorNome(listaAtual);
+                    break;
+                case "Por Avaliação":
+                    OrdenadorFilmes.ordenarPorAvaliacao(listaAtual);
+                    break;
+            }
+            atualizarListaFilmes(panelFilmes, listaAtual, "Filmes Ordenados", corFundo, corLetras, corCaixaPesquisa);
+        });
+        panelBotoesSuperiores.add(comboBoxOrdenacao);
 
         botaoFavoritos.addActionListener(e -> {
             listaAtual = biblioteca.listarFavoritos();
