@@ -2,64 +2,47 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-    /*
-     * LexAnalizer:
-     * Responsável pela análise léxica.
-     * Usa expressões regulares para identificar tokens.
-     * Controla a numeração das linhas e ignora comentários e espaços em branco.
-     * Utiliza a SymbolTable para verificar palavras reservadas e gerenciar identificadores.
-     * A expressão regular TOKEN_PATTERNS define todos os padrões necessários, incluindo números, identificadores, operadores, parênteses, etc.
-     * Comentários entre (* e *) são ignorados
-     * A lista RESERVED_WORDS contém todas as palavras-chave da linguagem Mini-Pascal.
-     */
+
 public class LexAnalizer {
 
     public LexAnalizer(String code) {
-        this.code = code.toLowerCase(); 
+        this.code = code;
         this.matcher = TOKEN_PATTERNS.matcher(this.code);
         this.lineNo = 1;
         this.currentPos = 0;
         this.symbolTable = new SymbolTable(RESERVED_WORDS);
     }
 
-    /*
-     * lista de palavras reservadas na linguagem pascal 
-     */
-
     private static final List<String> RESERVED_WORDS = Arrays.asList(
-        "and", "array", "begin", "case", "const", "div", "do", "downto", "else", "end", 
-        "file", "for", "function", "goto", "if", "in", "label", "mod", "nil", "not", 
-        "of", "or", "packed", "procedure", "program", "record", "repeat", "set", "then", 
-        "to", "type", "until", "var", "while", "with"
+        "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", 
+        "const", "continue", "default", "do", "double", "else", "enum", "extends", "final", 
+        "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", 
+        "int", "interface", "long", "native", "new", "package", "private", "protected", 
+        "public", "return", "short", "static", "strictfp", "super", "switch", "synchronized", 
+        "this", "throw", "throws", "transient", "try", "void", "volatile", "while"
     );
 
     private static final Pattern TOKEN_PATTERNS = Pattern.compile(
-
-         /*
-         * tabela de reconhecimento dos tokens da liguagem
-         */
-
         "(?<INTEGER>\\d+)|" +                                      // Número inteiro
-        "(?<REAL>\\d+\\.\\d+)|" +                                 // Número real
-        "(?<ID>[A-Za-z][A-Za-z0-9]*)|" +                         // Identificadores
-        "(?<STRING>'(\\\\'|[^'])*')|" +                          // String delimitada por aspas simples
-        "(?<CHAR>\\'[^\\'\\\\]|\\\\[nrt'\"\\\\]\\')|" +          // Caracteres
-        "(?<OP>[-+*/=<>]|:=)|" +                                 // Operadores
-        "(?<LPAREN>\\()|" +                                      // Delimitador - Parenteses Esquerdo
-        "(?<RPAREN>\\))|" +                                      // Delimitador - Parenteses Direito
-        "(?<LBRACE>\\{)|" +                                      // Delimitador - Chave Esquerda
-        "(?<RBRACE>\\})|" +                                      // Delimitador - Chave Direita
-        "(?<LSQUARE>\\[)|" +                                     // Delimitador - Colchete Esquerdo
-        "(?<RSQUARE>\\])|" +                                     // Delimitador - Colchete Direito
-        "(?<SEMICOLON>;)|" +                                     // Delimitador - Ponto e vírgula
-        "(?<COLON>:)|" +                                         // Delimitador - Dois pontos
-        "(?<COMMA>,)|" +                                         // Delimitador - Vírgula
-        "(?<DOT>\\.)|" +                                         // Delimitador - Ponto
-        "(?<ASSIGN>:=)|" +                                       // Operador de Atribuição
-        "(?<WHITESPACE>[ \t]+)|" +                               // Espaço em branco
-        "(?<NEWLINE>\\n)|" +                                     // Nova linha
-        "(?<COMMENT>\\{.*?\\}|//.*?\\n)|" +                      // Comentário de linha única
-        "(?<MISMATCH>.)"                                         // Outros caracteres não reconhecidos
+        "(?<REAL>\\d+\\.\\d+)|" +                                  // Número real
+        "(?<ID>[A-Za-z_][A-Za-z0-9_]*)|" +                         // Identificadores
+        "(?<STRING>\"(\\\\\"|[^\"])*\")|" +                        // Strings delimitadas por aspas duplas
+        "(?<CHAR>'(\\\\[nrt'\"\\\\]|[^'\\\\])')|" +                // Caracteres
+        "(?<OP>[-+*/=<>!&|%^~?:]+)|" +                             // Operadores
+        "(?<LPAREN>\\()|" +                                        // Delimitador - Parêntese Esquerdo
+        "(?<RPAREN>\\))|" +                                        // Delimitador - Parêntese Direito
+        "(?<LBRACE>\\{)|" +                                        // Delimitador - Chave Esquerda
+        "(?<RBRACE>\\})|" +                                        // Delimitador - Chave Direita
+        "(?<LSQUARE>\\[)|" +                                       // Delimitador - Colchete Esquerdo
+        "(?<RSQUARE>\\])|" +                                       // Delimitador - Colchete Direito
+        "(?<SEMICOLON>;)|" +                                       // Delimitador - Ponto e vírgula
+        "(?<COLON>:)|" +                                           // Delimitador - Dois pontos
+        "(?<COMMA>,)|" +                                           // Delimitador - Vírgula
+        "(?<DOT>\\.)|" +                                           // Delimitador - Ponto
+        "(?<WHITESPACE>[ \t]+)|" +                                 // Espaço em branco
+        "(?<NEWLINE>\\n)|" +                                       // Nova linha
+        "(?<COMMENT>/\\*.*?\\*/|//.*?\\n)|" +                      // Comentários
+        "(?<MISMATCH>.)"                                           // Outros caracteres não reconhecidos
     );
 
     private final String code;
@@ -91,14 +74,8 @@ public class LexAnalizer {
                     return symbolTable.getToken(value, lineNo);
                 }
             } else if (matcher.group("OP") != null) {
-                String value = matcher.group("OP");
                 currentPos = matcher.end();
-                // Handle := as a special case
-                if (value.equals(":") && matcher.find(currentPos) && matcher.group().equals("=")) {
-                    currentPos = matcher.end();
-                    return new Token(TokenType.OP, ":=", lineNo);
-                }
-                return new Token(TokenType.OP, value, lineNo);
+                return new Token(TokenType.OP, matcher.group("OP"), lineNo);
             } else if (matcher.group("LPAREN") != null) {
                 currentPos = matcher.end();
                 return new Token(TokenType.LPAREN, matcher.group("LPAREN"), lineNo);
@@ -143,15 +120,11 @@ public class LexAnalizer {
     }
 
     public static void main(String[] args) {
-        /*
-         * caso de testes com algumas operações para identificar operações,
-         * caracteres especiais, funções, e frases
-         */
         String[] testCases = {
-            "var a, b: integer;\nbegin\n  a := 10;\n  b := a + 5;\nend.",
-            "if a > b then\n  c := a - b\nelse\n  c := b - a;",
-            "function max(x, y: integer): integer;\nbegin\n  if x > y then\n    max := x\n  else\n    max := y;\nend;",
-            "(* This is a comment *)\nvar s: string;\nbegin\n  s := 'Hello, world!';\nend."
+            "int a, b;\nvoid main() {\n  a = 10;\n  b = a + 5;\n}",
+            "if (a > b) {\n  c = a - b;\n} else {\n  c = b - a;\n}",
+            "class Max {\n  int max(int x, int y) {\n    if (x > y) return x;\n    else return y;\n  }\n}",
+            "/* This is a comment */\nString s;\nvoid main() {\n  s = \"Hello, world!\";\n}"
         };
 
         for (String code : testCases) {
